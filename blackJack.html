@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<link rel="stylesheet" type="text/css" href="./stylesheets/blackjack.css">
+<body>
+    <div>
+        <div id="my_poker" class="poker">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        'use strict'
+        !(function(){
+            var Poker = (function(){
+                var turn_poker = 1,
+                    my_poker = document.getElementById('my_poker'),
+                    idx = 0,
+                    my_poker_div = '',
+                    poker_class = my_poker.className,
+                    point = 1,
+                    action = function () {
+                        if( turn_poker ){
+                            turn_poker = 0
+                            point = Math.floor((Math.random()*13)+1)
+
+                            my_poker.className += ' trans_1s move'
+                            setTimeout(function(){
+                                my_poker_div.className += ' turn trans_2s suits-' + point
+                                var time = setTimeout(function(){
+                                    my_poker_div.className += ' spades turn_back'
+
+                                }, 2000)
+                            }, 500)
+                        }
+                    }
+                my_poker.addEventListener('click', action, false)
+
+                var Poker = function () {
+                    var node = document.createElement('div')
+                    node.setAttribute('class', 'back')
+                    my_poker.appendChild(node)
+
+                    my_poker_div = document.querySelectorAll('#my_poker div')[idx]
+                }
+                return Poker
+            })()
+            var Poker1 = new Poker()
+
+        })()
+    </script>
+</body>
+</html>
