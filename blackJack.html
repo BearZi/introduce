@@ -2,50 +2,64 @@
 <html>
 <link rel="stylesheet" type="text/css" href="./stylesheets/blackjack.css">
 <body>
-    <div>
-        <div id="my_poker" class="poker">
-        </div>
+    <div id="board">
+        <div id="my_poker" ></div>
     </div>
 
     <script type="text/javascript">
         'use strict'
-        !(function(){
+        !function(){
             var Poker = (function(){
                 var turn_poker = 1,
+                    board = document.getElementById('board'),
                     my_poker = document.getElementById('my_poker'),
+                    poker = '',
                     idx = 0,
                     my_poker_div = '',
                     poker_class = my_poker.className,
                     point = 1,
                     action = function () {
-                        if( turn_poker ){
+                        if( turn_poker && idx < 5 ){
                             turn_poker = 0
+                            var node = document.createElement('div')
+                            node.setAttribute('class', 'poker')
+                            board.appendChild(node)
+
+                            poker = document.querySelectorAll('.poker')[idx]
+
+                            var node2 = document.createElement('div')
+                            node2.setAttribute('class', 'back')
+                            poker.appendChild(node2)
+
+                            my_poker_div = document.querySelectorAll('.poker div')[idx]
+
                             point = Math.floor((Math.random()*13)+1)
+                            idx++
 
-                            my_poker.className += ' trans_1s move'
                             setTimeout(function(){
-                                my_poker_div.className += ' turn trans_2s suits-' + point
-                                var time = setTimeout(function(){
-                                    my_poker_div.className += ' spades turn_back'
-
-                                }, 2000)
-                            }, 500)
+                                poker.className += ' trans_1s move'
+                                setTimeout(function(){
+                                    my_poker_div.className += ' turn trans_1s suits-' + point
+                                    setTimeout(function(){
+                                        my_poker_div.className += ' spades turn_back'
+                                        turn_poker = 1
+                                    }, 1000)
+                                }, 500)
+                            }, 300)
                         }
                     }
                 my_poker.addEventListener('click', action, false)
 
                 var Poker = function () {
-                    var node = document.createElement('div')
-                    node.setAttribute('class', 'back')
-                    my_poker.appendChild(node)
 
-                    my_poker_div = document.querySelectorAll('#my_poker div')[idx]
+                }
+                Poker.prototype.action = function () {
+
                 }
                 return Poker
             })()
             var Poker1 = new Poker()
-
-        })()
+        }()
     </script>
 </body>
 </html>
