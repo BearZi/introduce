@@ -14,41 +14,46 @@
                     board = document.getElementById('board'),
                     my_poker = document.getElementById('my_poker'),
                     idx = 0,
-                    point = 1
+                    point = 1,
+                    createNode= function (This) {
+                        This.node = document.createElement('div'),
+                        This.node2 = document.createElement('div')
+                        This.node.setAttribute('class', 'poker')
+
+                        board.appendChild(This.node)
+
+                        This.node2.setAttribute('class', 'back')
+                        This.node.appendChild(This.node2)
+                    },
+                    action = function (This) {
+                        if( turn_poker && idx < 5 ){
+                            turn_poker = 0
+                            createNode(This)
+
+                            point = Math.floor((Math.random()*13)+1)
+                            idx++
+
+                            setTimeout(function(){
+                                This.node.className += ' trans_1s move'
+                                setTimeout(function(){
+                                    This.node2.className += ' turn trans_1s suits-' + point
+                                    setTimeout(function(){
+                                        This.node2.className += ' spades turn_back'
+                                        turn_poker = 1
+                                    }, 1000)
+                                }, 500)
+                            }, 300)
+                        }
+                    },
+                    timeoutFnc = function (fnc, time) {
+                        setTimeout(fnc, time)
+                    }
+
+
 
                 var Poker = function () {
                     var This = this
-                    my_poker.addEventListener('click', function () { This.action() }, false)
-                }
-                Poker.prototype.createNode = function () {
-                    this.node = document.createElement('div'),
-                    this.node2 = document.createElement('div')
-                    this.node.setAttribute('class', 'poker')
-
-                    board.appendChild(this.node)
-
-                    this.node2.setAttribute('class', 'back')
-                    this.node.appendChild(this.node2)
-                }
-                Poker.prototype.action = function () {
-                    var This = this
-                    if( turn_poker && idx < 5 ){
-                        turn_poker = 0
-                        this.createNode()
-
-                        point = Math.floor((Math.random()*13)+1)
-                        idx++
-                        setTimeout(function(){
-                            This.node.className += ' trans_1s move'
-                            setTimeout(function(){
-                                This.node2.className += ' turn trans_1s suits-' + point
-                                setTimeout(function(){
-                                    This.node2.className += ' spades turn_back'
-                                    turn_poker = 1
-                                }, 1000)
-                            }, 500)
-                        }, 300)
-                    }
+                    my_poker.addEventListener('click', function () { action(This) }, false)
                 }
                 return Poker
             })()
