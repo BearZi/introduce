@@ -66,9 +66,9 @@
                     },
                     turnPoker = function (This) {
                         This.node2.className += ' turn trans_1s suits-' + point
-                        timeoutFnc( wrapFnc(addPattern, This), 1000)
+                        timeoutFnc( wrapFnc(addSuit, This), 1000)
                     },
-                    addPattern = function (This) {
+                    addSuit = function (This) {
                         This.node2.className += ' spades turn_back'
                         turn_poker = 1
                         own_point.innerHTML = total_points

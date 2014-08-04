@@ -20,9 +20,9 @@
     -webkit-transform: rotateY(180deg);
  }
 .spades { background: url(../images/spades.png) }
-.hearts {}
-.diamonds {}
-.clubs {}
+.hearts { background: url(../images/hearts.png) }
+.diamonds { background: url(../images/diamonds.png) }
+.clubs { background: url(../images/clubs.png) }
 .suits-1 { background-position: 0 -1px; }
 .suits-2 { background-position: 0 -114px; }
 .suits-3 { background-position: 0 -225px; }
