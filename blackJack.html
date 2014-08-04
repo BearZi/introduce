@@ -5,16 +5,20 @@
     <div id="board">
         <div id="my_poker" ></div>
     </div>
+    <div>Own points: <span id="own_point">0</span></div>
 
     <script type="text/javascript">
-        'use strict'
         !function(){
+            'use strict'
             var Poker = (function(){
                 var turn_poker = 1,
                     board = document.getElementById('board'),
                     my_poker = document.getElementById('my_poker'),
+                    own_point = document.getElementById('own_point'),
                     idx = 0,
                     point = 1,
+                    total_points = 0,
+                    check_poker = [],
                     createNode= function (This) {
                         This.node = document.createElement('div'),
                         This.node2 = document.createElement('div')
@@ -27,34 +31,59 @@
                     },
                     action = function (This) {
                         if( turn_poker && idx < 5 ){
+                            if (total_points > 21) return
+
                             turn_poker = 0
                             createNode(This)
-
-                            point = Math.floor((Math.random()*13)+1)
+                            checkPoker()
                             idx++
 
-                            setTimeout(function(){
-                                This.node.className += ' trans_1s move'
-                                setTimeout(function(){
-                                    This.node2.className += ' turn trans_1s suits-' + point
-                                    setTimeout(function(){
-                                        This.node2.className += ' spades turn_back'
-                                        turn_poker = 1
-                                    }, 1000)
-                                }, 500)
-                            }, 300)
+                            timeoutFnc( wrapFnc(movePoker, This), 300)
+                        }
+                    },
+                    checkPoker = function () {
+                        point = Math.floor((Math.random()*13)+1)
+                        console.log(point)
+                        if ( check_poker.indexOf( 'suits-' + point) > -1 ) {
+                            checkPoker()
+                            return 
+                        }
+
+                        total_points += point
+                        check_poker.push('suits-' + point)
+                    },
+                    wrapFnc = function (fnc, This) {
+                        return function () {
+                            fnc(This)
                         }
                     },
                     timeoutFnc = function (fnc, time) {
                         setTimeout(fnc, time)
+                    },
+                    movePoker = function (This) {
+                        This.node.className += ' trans_1s move'
+                        timeoutFnc( wrapFnc(turnPoker, This), 500)
+                    },
+                    turnPoker = function (This) {
+                        This.node2.className += ' turn trans_1s suits-' + point
+                        timeoutFnc( wrapFnc(addPattern, This), 1000)
+                    },
+                    addPattern = function (This) {
+                        This.node2.className += ' spades turn_back'
+                        turn_poker = 1
+                        own_point.innerHTML = total_points
+                        if ( total_points == 21 ||  (total_points < 21 && idx == 5) ) {
+                            alert('Winner!')
+                        } else if (total_points > 21) {
+                            alert('Loser!')
+                        }
                     }
-
-
 
                 var Poker = function () {
                     var This = this
                     my_poker.addEventListener('click', function () { action(This) }, false)
                 }
+
                 return Poker
             })()
             var Poker1 = new Poker()
