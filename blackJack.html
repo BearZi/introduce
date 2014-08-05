@@ -17,6 +17,7 @@
                     own_point = document.getElementById('own_point'),
                     idx = 0,
                     point = 1,
+                    suit = 'suits-',
                     total_points = 0,
                     check_poker = [],
                     createNode= function (This) {
@@ -42,15 +43,19 @@
                         }
                     },
                     checkPoker = function () {
+                        var chech_str = ''
                         point = Math.floor((Math.random()*13)+1)
+                        suit = ['spades', 'hearts', 'diamonds', 'clubs'][Math.floor((Math.random()*4))]
+                        chech_str = suit + '_' + point
                         console.log(point)
-                        if ( check_poker.indexOf( 'suits-' + point) > -1 ) {
+                        if ( check_poker.indexOf(chech_str) > -1 ) {
                             checkPoker()
                             return 
                         }
 
                         total_points += point
-                        check_poker.push('suits-' + point)
+                        check_poker.push(chech_str)
+                        console.log(check_poker)
                     },
                     wrapFnc = function (fnc, This) {
                         return function () {
@@ -69,7 +74,7 @@
                         timeoutFnc( wrapFnc(addSuit, This), 1000)
                     },
                     addSuit = function (This) {
-                        This.node2.className += ' spades turn_back'
+                        This.node2.className += ' turn_back ' + suit
                         turn_poker = 1
                         own_point.innerHTML = total_points
                         if ( total_points == 21 ||  (total_points < 21 && idx == 5) ) {
