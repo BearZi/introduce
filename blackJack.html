@@ -5,20 +5,22 @@
     <div id="board">
         <div id="my_poker" ></div>
     </div>
-    <div>Own points: <span id="own_point">0</span></div>
+    <div class="score">
+        <span>Bank's points: <span id="bank_point">0</span></span>
+        <span>Own points: <span id="own_point">0</span></span>
+    </div>
+    <div id="actions">Stand</div>
 
     <script type="text/javascript">
         !function(){
             'use strict'
             var Poker = (function(){
-                var turn_poker = 1,
-                    board = document.getElementById('board'),
+                var board = document.getElementById('board'),
                     my_poker = document.getElementById('my_poker'),
                     own_point = document.getElementById('own_point'),
-                    idx = 0,
+                    bank_point = document.getElementById('bank_point'),
                     point = 1,
                     suit = 'suits-',
-                    total_points = 0,
                     check_poker = [],
                     createNode= function (This) {
                         This.node = document.createElement('div'),
@@ -31,30 +33,31 @@
                         This.node.appendChild(This.node2)
                     },
                     action = function (This) {
-                        if( turn_poker && idx < 5 ){
-                            if (total_points > 21) return
+                        if ( This.turn_poker && This.idx < 5 ) {
+                            if ( This.total_points > 21 ) return
 
-                            turn_poker = 0
+                            This.turn_poker = 0
                             createNode(This)
-                            checkPoker()
-                            idx++
+                            checkPoker(This)
+                            This.idx++
 
-                            timeoutFnc( wrapFnc(movePoker, This), 300)
+                            timeoutFnc(wrapFnc(movePoker, This), 300)
                         }
                     },
-                    checkPoker = function () {
-                        var chech_str = ''
+                    checkPoker = function (This) {
+                        var check_str = ''
                         point = Math.floor((Math.random()*13)+1)
                         suit = ['spades', 'hearts', 'diamonds', 'clubs'][Math.floor((Math.random()*4))]
-                        chech_str = suit + '_' + point
+                        check_str = suit + '_' + point
                         console.log(point)
-                        if ( check_poker.indexOf(chech_str) > -1 ) {
-                            checkPoker()
+
+                        if ( check_poker.indexOf(check_str) > -1 ) {
+                            checkPoker(This)
                             return 
                         }
 
-                        total_points += point
-                        check_poker.push(chech_str)
+                        This.total_points += (point > 10 ? 10 : point)
+                        check_poker.push(check_str)
                         console.log(check_poker)
                     },
                     wrapFnc = function (fnc, This) {
@@ -67,31 +70,53 @@
                     },
                     movePoker = function (This) {
                         This.node.className += ' trans_1s move'
-                        timeoutFnc( wrapFnc(turnPoker, This), 500)
+                        if ( This.auto ) This.node.className += ' bank_move'
+                        timeoutFnc(wrapFnc(turnPoker, This), 500)
                     },
                     turnPoker = function (This) {
                         This.node2.className += ' turn trans_1s suits-' + point
-                        timeoutFnc( wrapFnc(addSuit, This), 1000)
+                        timeoutFnc(wrapFnc(addSuit, This), 1000)
                     },
                     addSuit = function (This) {
                         This.node2.className += ' turn_back ' + suit
-                        turn_poker = 1
-                        own_point.innerHTML = total_points
-                        if ( total_points == 21 ||  (total_points < 21 && idx == 5) ) {
+                        This.turn_poker = 1
+                        This.point_obj.innerHTML = This.total_points
+
+                        checkWinner(This)
+                        if ( This.auto ) action(This)
+                    },
+                    checkWinner = function (This) {
+                        if ( This.total_points == 21 ||  (This.total_points < 21 && This.idx == 5) ) {
+                            This.turn_poker = 0
                             alert('Winner!')
-                        } else if (total_points > 21) {
-                            alert('Loser!')
+                        } else if ( This.total_points > 21 ) {
+                            alert('Over!')
                         }
                     }
 
-                var Poker = function () {
-                    var This = this
-                    my_poker.addEventListener('click', function () { action(This) }, false)
-                }
 
+                var Poker = function () {
+                    this.total_points = 0
+                    this.idx = 0
+                    this.turn_poker = 1
+                }
+                Poker.prototype.start = function (auto) {
+                    var This = this
+                    This.auto = auto
+                    if ( auto ){
+                        action(This)
+                    } else {
+                        my_poker.addEventListener('click', function () { action(This) }, false)
+                    }
+                    This.point_obj = auto ? bank_point : own_point
+                }
                 return Poker
             })()
-            var Poker1 = new Poker()
+            var Player = new Poker()
+            var Bank = new Poker()
+
+            Player.start(0)
+            Bank.start(1)
         }()
     </script>
 </body>

@@ -1,5 +1,6 @@
+body { margin: 0; }
 #my_poker {
-    border: 1px solid orange;
+    border: 1px dashed orange;
     position: relative;
     width: 75px;
     height: 110px;
@@ -10,6 +11,7 @@
     width: 500px;
     height: 400px;
     border: 1px solid green;
+    border-radius: 0 0 50% 50%;
     position: relative;
 }
 .back { 
@@ -36,7 +38,6 @@
 .suits-11 { background-position: 0 -1126px; }
 .suits-12 { background-position: 0 -1238px; }
 .suits-13 { background-position: 0 -1351px; }
-
 .poker {
     position: absolute;
     width: 75px;
@@ -53,25 +54,25 @@
     -webkit-transition-duration: 2s;
 }
 .move {
-    top: 10%;
-    left: 50%;
+    top: 50%;
+    left: 20%;
     margin-left: -37.5px;
 }
-.move:nth-of-type(3) {
-    margin-left: 0;
+.bank_move {
+    top: 10%;
+    left: 30%;
 }
-.move:nth-of-type(4) {
-    margin-left: 37.5px;
-}
-.move:nth-of-type(5) {
-    margin-left: 75px;
-}
-.move:nth-of-type(6) {
-    margin-left: 112.5px;
-}
-.move:nth-of-type(7) {
-    margin-left: 150px;
-}
+.move:nth-of-type(3) { margin-left: 0; }
+.move:nth-of-type(4) { margin-left: 37.5px; }
+.move:nth-of-type(5) { margin-left: 75px; }
+.move:nth-of-type(6) { margin-left: 112.5px; }
+.move:nth-of-type(7) { margin-left: 150px; } 
+.move:nth-of-type(8) { margin-left: 187.5px; } 
+.move:nth-of-type(9) { margin-left: 225px; }
+.move:nth-of-type(10) { margin-left: 262.5px; }
+.move:nth-of-type(11) { margin-left: 300px; }
+.move:nth-of-type(12) { margin-left: 337.5px; }
+
 .turn {
     transform: rotateY(270deg);
     -webkit-transform: rotateY(270deg);
@@ -80,5 +81,11 @@
     transform: rotateY(360deg);
     -webkit-transform: rotateY(360deg);
 }
-
-
+#actions,
+.score {
+    text-align: center;
+    margin-top: 10px;
+}
+.score > span {
+    border: 1px dotted #00ACAB;
+}
