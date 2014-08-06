@@ -35,19 +35,6 @@
                         This.node2.setAttribute('class', 'back')
                         This.node.appendChild(This.node2)
                     },
-                    action = function (This) {
-                        checkPoint(This)
-                        if ( This.turn_poker && This.idx < 5 ) {
-                            if ( This.total_points > 21 ) return
-
-                            This.turn_poker = 0
-                            createNode(This)
-                            
-                            This.idx++
-                            checkPoker(This)
-                            timeoutFnc(wrapFnc(movePoker, This), 300)
-                        }
-                    },
                     checkPoint = function (This) {
                         var temp_count_point = 0
 
@@ -96,7 +83,7 @@
                         This.point_obj.innerHTML = This.total_points
 
                         checkBust(This)
-                        if ( This.auto ) action(This)
+                        if ( This.auto ) This.action(This)
                     },
                     checkBust = function (This) {
                         if ( This.total_points == 21 ||  (This.total_points < 21 && This.idx == 5) ) {
@@ -129,23 +116,41 @@
 
                     ac_stand.addEventListener('click', wrapFnc(checkWinner, this), false)
                 }
-                Poker.prototype.start = function (auto) {
-                    var This = this
-                    This.auto = auto
-                    if ( auto ){
-                        action(This)
-                    } else {
-                        my_poker.addEventListener('click', function () { action(This) }, false)
+
+                // Poker.prototype.start = function (auto) {
+                //     var This = this
+                //     This.auto = auto
+                //     if ( auto ){
+                //         action(This)
+                //     } else {
+                //         my_poker.addEventListener('click', function () { action(This) }, false)
+                //     }
+                //     This.point_obj = auto ? bank_point : own_point
+                // }
+                Poker.prototype.action = function (This) {
+                    console.log('*** %o' , This)
+                    checkPoint(This)
+                    if ( This.turn_poker && This.idx < 5 ) {
+                        if ( This.total_points > 21 ) return
+
+                        This.turn_poker = 0
+                        createNode(This)
+                        
+                        This.idx++
+                        checkPoker(This)
+                        timeoutFnc(wrapFnc(movePoker, This), 300)
                     }
-                    This.point_obj = auto ? bank_point : own_point
                 }
                 return Poker
             })()
             var Player = new Poker()
             var Bank = new Poker()
 
-            Player.start(0)
-            Bank.start(1)
+            // Player.start(0)
+            // Bank.start(1)
+            Bank.auto = 1
+            Bank.point_obj = document.getElementById('bank_point')
+            Bank.action(Bank) 
 
         }()
     </script>
