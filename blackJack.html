@@ -9,7 +9,9 @@
         <span>Bank's points: <span id="bank_point">0</span></span>
         <span>Own points: <span id="own_point">0</span></span>
     </div>
-    <div id="actions">Stand</div>
+    <div id="actions">
+        <span id="stand">Stand</span>
+    </div>
 
     <script type="text/javascript">
         !function(){
@@ -19,6 +21,7 @@
                     my_poker = document.getElementById('my_poker'),
                     own_point = document.getElementById('own_point'),
                     bank_point = document.getElementById('bank_point'),
+                    ac_stand = document.getElementById('stand'),
                     point = 1,
                     suit = 'suits-',
                     check_poker = [],
@@ -33,25 +36,36 @@
                         This.node.appendChild(This.node2)
                     },
                     action = function (This) {
+                        checkPoint(This)
                         if ( This.turn_poker && This.idx < 5 ) {
                             if ( This.total_points > 21 ) return
 
                             This.turn_poker = 0
                             createNode(This)
-                            checkPoker(This)
+                            
                             This.idx++
-
+                            checkPoker(This)
                             timeoutFnc(wrapFnc(movePoker, This), 300)
                         }
                     },
+                    checkPoint = function (This) {
+                        var temp_count_point = 0
+
+                        point = Math.floor((Math.random()*13)+1)
+
+                        //check the auto next point 
+                        temp_count_point = This.total_points + (point > 10 ? 10 : point)
+                        // console.log(temp_count_point)
+                        if ( This.auto && temp_count_point > 21 ) This.turn_poker = 0
+                    },
                     checkPoker = function (This) {
                         var check_str = ''
-                        point = Math.floor((Math.random()*13)+1)
                         suit = ['spades', 'hearts', 'diamonds', 'clubs'][Math.floor((Math.random()*4))]
                         check_str = suit + '_' + point
                         console.log(point)
 
                         if ( check_poker.indexOf(check_str) > -1 ) {
+                            checkPoint(This)
                             checkPoker(This)
                             return 
                         }
