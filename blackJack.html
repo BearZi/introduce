@@ -12,6 +12,9 @@
     <div id="actions">
         <span id="stand">Stand</span>
     </div>
+    <div id="profile">
+        <h1>Winner!</h1>
+    </div>
 
     <script type="text/javascript">
         !function(){
@@ -20,6 +23,7 @@
                 var board = document.getElementById('board'),
                     my_poker = document.getElementById('my_poker'),
                     ac_stand = document.getElementById('stand'),
+                    profile = document.getElementById('profile'),
                     point = 1,
                     suit,
                     check_poker = [],
@@ -89,7 +93,9 @@
                     checkBust = function (This) {
                         if ( !This.auto && (This.total_points == 21 || (This.total_points < 21 && This.idx == 5)) ) {
                             This.turn_poker = 0
-                            alert('Winner!')
+                            // alert('Winner!')
+                            board.className += 'trans_3s show_profile'
+                            profile.className += 'trans_3s move_up'
                         } else if ( This.total_points > 21 ) {
                             This.turn_poker = 0
                             alert('Over!')
@@ -103,7 +109,9 @@
                             This.turn_poker = 0
 
                             if ( (own_score >= bank_score && own_score <= 21) || This.idx == 5 ) {
-                                alert('Winner!')
+                                // alert('Winner!')
+                                board.className += 'trans_3s show_profile'
+                                profile.className += 'trans_3s move_up'
                             } else {
                                 alert('Loser!')
                             }
