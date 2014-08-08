@@ -94,8 +94,8 @@
                         if ( !This.auto && (This.total_points == 21 || (This.total_points < 21 && This.idx == 5)) ) {
                             This.turn_poker = 0
                             // alert('Winner!')
-                            board.className += 'trans_3s show_profile'
-                            profile.className += 'trans_3s move_up'
+                            board.className += 'trans_2s show_profile'
+                            profile.className += 'trans_2s move_up'
                         } else if ( This.total_points > 21 ) {
                             This.turn_poker = 0
                             alert('Over!')
@@ -110,8 +110,8 @@
 
                             if ( (own_score >= bank_score && own_score <= 21) || This.idx == 5 ) {
                                 // alert('Winner!')
-                                board.className += 'trans_3s show_profile'
-                                profile.className += 'trans_3s move_up'
+                                board.className += 'trans_2s show_profile'
+                                profile.className += 'trans_2s move_up'
                             } else {
                                 alert('Loser!')
                             }
