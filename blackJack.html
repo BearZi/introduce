@@ -15,6 +15,11 @@
     <div id="profile">
         <h1>Winner!</h1>
     </div>
+    <div id="ctrl">
+        <div class="align">
+            <span id="play_game">Play</span> / <span id="skip_game">Skip</span>
+        </div>
+    </div>
 
     <script type="text/javascript">
         !function(){
@@ -142,16 +147,26 @@
                         my_poker.addEventListener('click', function () { This.action(own_this) }, false)
                     }
                 }
+                Poker.prototype.skip = function () {
+
+                }
                 return Poker
             })()
-            var Player = new Poker()
-            var Bank = new Poker()
+            var Player = new Poker(),
+                Bank = new Poker(),
+                play_game = document.getElementById('play_game'),
+                skip_game = document.getElementById('skip_game'),
+                ctrl = document.getElementById('ctrl'),
+                playGame = function () {
+                    ctrl.style.display = 'none'
+                    Player.point_obj = document.getElementById('own_point')
 
-            Player.point_obj = document.getElementById('own_point')
+                    Bank.auto = 1
+                    Bank.point_obj = document.getElementById('bank_point')
+                    Bank.action(Bank, Player)
+                }
 
-            Bank.auto = 1
-            Bank.point_obj = document.getElementById('bank_point')
-            Bank.action(Bank, Player)
+            play_game.addEventListener('click', playGame, false)
 
         }()
     </script>
