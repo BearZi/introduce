@@ -98,9 +98,7 @@
                     checkBust = function (This) {
                         if ( !This.auto && (This.total_points == 21 || (This.total_points < 21 && This.idx == 5)) ) {
                             This.turn_poker = 0
-                            // alert('Winner!')
-                            board.className += 'trans_2s show_profile'
-                            profile.className += 'trans_2s move_up'
+                            This.skip()
                         } else if ( This.total_points > 21 ) {
                             This.turn_poker = 0
                             alert('Over!')
@@ -114,9 +112,7 @@
                             This.turn_poker = 0
 
                             if ( (own_score >= bank_score && own_score <= 21) || This.idx == 5 ) {
-                                // alert('Winner!')
-                                board.className += 'trans_2s show_profile'
-                                profile.className += 'trans_2s move_up'
+                                This.skip()
                             } else {
                                 alert('Loser!')
                             }
@@ -148,7 +144,8 @@
                     }
                 }
                 Poker.prototype.skip = function () {
-
+                    board.className += 'trans_2s show_profile'
+                    profile.className += 'trans_2s move_up'
                 }
                 return Poker
             })()
@@ -164,9 +161,14 @@
                     Bank.auto = 1
                     Bank.point_obj = document.getElementById('bank_point')
                     Bank.action(Bank, Player)
+                },
+                skipGame = function () {
+                    ctrl.style.display = 'none'
+                    Bank.skip()
                 }
 
             play_game.addEventListener('click', playGame, false)
+            skip_game.addEventListener('click', skipGame, false)
 
         }()
     </script>
